@@ -37,6 +37,39 @@ class UserResourceLimits extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getMemoryLeft(): ?int
+    {
+        if ($this->memory > 0) {
+            $sum_memory = $this->user->servers->sum('memory');
+
+            return $this->memory - $sum_memory;
+        }
+
+        return null;
+    }
+
+    public function getDiskLeft(): ?int
+    {
+        if ($this->disk > 0) {
+            $sum_disk = $this->user->servers->sum('disk');
+
+            return $this->disk - $sum_disk;
+        }
+
+        return null;
+    }
+
+    public function getCpuLeft(): ?int
+    {
+        if ($this->cpu > 0) {
+            $sum_cpu = $this->user->servers->sum('cpu');
+
+            return $this->cpu - $sum_cpu;
+        }
+
+        return null;
+    }
+
     public function canCreateServer(int $memory, int $disk, int $cpu): bool
     {
         if ($this->server_limit && $this->user->servers->count() + 1 > $this->server_limit) {
@@ -79,9 +112,13 @@ class UserResourceLimits extends Model
         return true;
     }
 
-    public function createServer(string $name, Egg $egg, int $memory, int $disk, int $cpu): ?Server
+    public function createServer(string $name, int|Egg $egg, int $memory, int $disk, int $cpu): Server|bool
     {
         if ($this->canCreateServer($memory, $disk, $cpu)) {
+            if (!$egg instanceof Egg) {
+                $egg = Egg::findOrFail($egg);
+            }
+
             $environment = [];
             foreach ($egg->variables as $variable) {
                 $environment[$variable->env_variable] = $variable->default_value;
@@ -116,6 +153,6 @@ class UserResourceLimits extends Model
             return $service->handle($data, $object);
         }
 
-        return null;
+        return false;
     }
 }

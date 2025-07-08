@@ -14,6 +14,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -37,6 +38,11 @@ class UserResourceLimitsResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return trans_choice('usercreatableservers::strings.user_resource_limits', 2);
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return config('panel.filament.top-navigation', false) ? null : trans('admin/dashboard.user');
     }
 
     public static function getNavigationBadge(): ?string
@@ -67,7 +73,9 @@ class UserResourceLimitsResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    ViewAction::make(),
+                    ViewAction::make()
+                        ->hidden(fn ($record) => static::canEdit($record)),
+                    EditAction::make(),
                     DeleteAction::make(),
                 ]),
             ])
@@ -86,7 +94,8 @@ class UserResourceLimitsResource extends Resource
                     ->relationship('user', 'username')
                     ->searchable(['username', 'email'])
                     ->getOptionLabelFromRecordUsing(fn (User $user) => "$user->username ($user->email)")
-                    ->selectablePlaceholder(false),
+                    ->selectablePlaceholder(false)
+                    ->hiddenOn('edit'),
                 TextInput::make('memory')
                     ->label(trans('usercreatableservers::strings.memory'))
                     ->required()
@@ -114,7 +123,8 @@ class UserResourceLimitsResource extends Resource
                 TextInput::make('server_limit')
                     ->label(trans('usercreatableservers::strings.server_limit'))
                     ->numeric()
-                    ->nullable(),
+                    ->nullable()
+                    ->placeholder(trans('usercreatableservers::strings.no_limit')),
             ]);
     }
 
