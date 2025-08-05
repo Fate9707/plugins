@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "status": "disabled",
+        "status_message": null,
+        "load_order": 0
+    },
+    "id": "fluffytheme",
+    "name": "Fluffy Theme",
+    "author": "Boy132",
+    "version": "1.0.0",
+    "description": "A super nice and super fluffy theme.",
+    "category": "theme",
+    "url": "https://github.com/Boy132/fluffytheme",
+    "update_url": null,
+    "namespace": "Boy132\\FluffyTheme",
+    "class": "FluffyThemePlugin",
+    "panels": null,
+    "panel_version": null,
+    "composer_packages": null
+}
