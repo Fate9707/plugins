@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "status": "disabled",
+        "status_message": null,
+        "load_order": 0
+    },
+    "id": "piratelanguage",
+    "name": "Pirate Language",
+    "author": "Boy132",
+    "version": "1.0.0",
+    "description": "Turns yer site's lingo into pirate talk, matey!",
+    "category": "language",
+    "url": "https://github.com/Boy132/pirate-language",
+    "update_url": null,
+    "namespace": "Boy132\\PirateLanguage",
+    "class": "PirateLanguagePlugin",
+    "panels": null,
+    "panel_version": null,
+    "composer_packages": null
+}
