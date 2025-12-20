@@ -22,8 +22,10 @@ return new class extends Migration
             $table->unsignedInteger('allocation_limit')->default(0);
             $table->unsignedInteger('database_limit')->default(0);
             $table->unsignedInteger('backup_limit')->default(0);
+
             $table->unsignedInteger('egg_id');
             $table->foreign('egg_id')->references('id')->on('eggs')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
