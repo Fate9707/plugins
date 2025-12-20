@@ -69,7 +69,7 @@ class SubdomainResource extends Resource
         /** @var Server $server */
         $server = Filament::getTenant();
 
-        return $server->subdomain_limit; // @phpstan-ignore property.notFound
+        return $server->subdomain_limit ?? 0;
     }
 
     public static function table(Table $table): Table
